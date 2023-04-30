@@ -15,7 +15,7 @@ green = (0, 255, 0)
 blue = (0, 0, 255)
 black = (0, 0, 0)
 clock = pygame.time.Clock()
-
+frequencies = {'left': 0.1, 'right': 0.05, 'up': 0.03333, 'down': 0.025}
 
 class rectangle():
     def __init__(self, x, y, width, height, color, frequency,direction):
@@ -33,8 +33,6 @@ class rectangle():
         pygame.draw.rect(screen, black, (self.x, self.y, self.width, self.height))
         pygame.display.update()
         time.sleep(self.frequency)
-        pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
-        pygame.display.update()
     def draw_rect(self):
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
         pygame.display.update()
@@ -47,16 +45,16 @@ class rectangle():
 
 def random_blinking(rect):
     nums = 0
-    rounds = 45
-    while nums <= rounds:
+    rounds = 2.5 / rect.frequency
+    while nums<=rounds:
         rect.blinking()
         nums += 1
 
 trials = 4
-red_rec = rectangle(0, 0, 400, 300, red, 0.1111,'left')
-purple_rec = rectangle(400, 0, 400, 300, purple, 0.0909,'right')
-green_rec = rectangle(0, 300, 400, 300, green, 0.07692,'up')
-blue_rec = rectangle(400, 300, 400, 300, blue, 0.06667,'down')
+red_rec = rectangle(0, 0, 400, 300, red, frequencies['left'],'left')
+purple_rec = rectangle(400, 0, 400, 300, purple, frequencies['right'],'right')
+green_rec = rectangle(0, 300, 400, 300, green, frequencies['up'],'up')
+blue_rec = rectangle(400, 300, 400, 300, blue, frequencies['down'],'down')
 rectangles = {red_rec: 0, purple_rec: 0, green_rec: 0, blue_rec: 0}
 
 def main():
@@ -70,7 +68,8 @@ def main():
         purple_rec.draw()
         green_rec.draw()
         blue_rec.draw()
-        time.sleep(5)    
+        time.sleep(1)    
+
         if(len(rectangles)!=0):
             random_rectangle = random.choice(list(rectangles.keys()))
             rectangles[random_rectangle] += 1
